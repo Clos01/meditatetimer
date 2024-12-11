@@ -3,7 +3,7 @@
 A beautiful, minimalist meditation timer built with Next.js and Tailwind CSS. This app helps users maintain a consistent meditation practice with customizable timers, ambient sounds, and mindful notifications.
 Check the screenshot below:
 
-![Mindful Moments Screenshot](public/web-app-screenshot.png)
+![Mindful Moments Screenshot](public/photos/web-app-screenshot.png)
 ## Features
 
 - 🕒 Customizable meditation timer (1-60 minutes)
