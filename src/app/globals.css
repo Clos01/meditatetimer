@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Custom slider styles */
+@layer utilities {
+  input[type="range"] {
+    @apply appearance-none bg-white/10 h-2 rounded-full;
+  }
+
+  /* For Firefox */
+  input[type="range"]::-moz-range-progress {
+    @apply bg-white/30 h-2 rounded-full;
+  }
+
+  /* For Chrome/Safari */
+  input[type="range"]::-webkit-slider-runnable-track {
+    @apply h-2 rounded-full;
+  }
+
+  /* Hover effects */
+  input[type="range"]:hover::-webkit-slider-thumb {
+    @apply scale-110;
+  }
+  
+  input[type="range"]:hover::-moz-range-thumb {
+    @apply scale-110;
+  }
+
+  /* Active state */
+  input[type="range"]:active::-webkit-slider-thumb {
+    @apply scale-125;
+  }
+  
+  input[type="range"]:active::-moz-range-thumb {
+    @apply scale-125;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -20px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
