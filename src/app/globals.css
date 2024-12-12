@@ -53,6 +53,27 @@ body {
   input[type="range"]:active::-moz-range-thumb {
     @apply scale-125;
   }
+
+  .volume-slider {
+    @apply appearance-none bg-white/20 h-1.5 rounded-full;
+  }
+
+  .volume-slider::-webkit-slider-thumb {
+    @apply appearance-none w-3 h-3 rounded-full bg-white shadow-lg transition-all hover:scale-110;
+  }
+
+  .volume-slider::-moz-range-thumb {
+    @apply w-3 h-3 rounded-full bg-white border-0 shadow-lg transition-all hover:scale-110;
+  }
+
+  /* Volume slider track */
+  .volume-slider::-webkit-slider-runnable-track {
+    @apply rounded-full;
+  }
+
+  .volume-slider::-moz-range-track {
+    @apply rounded-full;
+  }
 }
 
 @keyframes fadeIn {
@@ -68,4 +89,52 @@ body {
 
 .animate-fade-in {
   animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* Add to your existing animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOutDown {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.animate-fade-out-down {
+  animation: fadeOutDown 0.8s ease-out forwards;
+}
+
+/* Add to your existing animations */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
 }

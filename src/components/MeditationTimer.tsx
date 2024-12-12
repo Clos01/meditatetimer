@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { FaPlay, FaPause, FaStop, FaVolumeUp, FaVolumeMute, FaBell, FaCog } from 'react-icons/fa';
+import { FaPlay, FaPause, FaStop, FaVolumeUp, FaVolumeMute, FaBell, FaCog, FaVolumeDown } from 'react-icons/fa';
 import { BreathingCircle } from './BreathingCircle';
+import { QuoteDisplay } from './QuoteDisplay';
 
 export function MeditationTimer() {
   const [timeLeft, setTimeLeft] = useState(0);
@@ -22,6 +23,8 @@ export function MeditationTimer() {
     customMessage: 'Time for a mindful break! 🌿',
   });
   const [showSettings, setShowSettings] = useState(false);
+  const [volume, setVolume] = useState(0.5); // Default volume at 50%
+  const [showVolumeSlider, setShowVolumeSlider] = useState(false);
 
   // Initialize audio elements on component mount
   useEffect(() => {
@@ -179,6 +182,27 @@ export function MeditationTimer() {
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
+  // Update volume when it changes
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume;
+    }
+  }, [volume]);
+
+  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newVolume = parseFloat(e.target.value);
+    setVolume(newVolume);
+    if (audioRef.current) {
+      audioRef.current.volume = newVolume;
+    }
+  };
+
+  const getVolumeIcon = () => {
+    if (volume === 0) return <FaVolumeMute size={20} />;
+    if (volume < 0.5) return <FaVolumeDown size={20} />;
+    return <FaVolumeUp size={20} />;
+  };
+
   return (
     <div className="relative flex flex-col items-center gap-8 p-12 rounded-3xl bg-gradient-to-br from-purple-50/10 to-blue-50/10 backdrop-blur-lg shadow-xl border border-white/10 max-w-md w-full transition-all duration-500 hover:shadow-2xl">
       {/* Settings Panel */}
@@ -285,10 +309,8 @@ export function MeditationTimer() {
         </div>
       )}
 
-      {/* Peaceful quote */}
-      <p className="text-center text-lg italic text-gray-300/80">
-        "Breathe in peace, breathe out tension"
-      </p>
+      {/* Replace the static quote with QuoteDisplay */}
+      <QuoteDisplay />
 
       {/* Add Breathing Circle when meditation is active */}
       {isActive && <BreathingCircle />}
@@ -365,6 +387,55 @@ export function MeditationTimer() {
 
       {/* Control Buttons */}
       <div className="flex gap-6 items-center mt-4">
+        {/* Volume Control */}
+        <div className="relative group">
+          <button
+            onClick={() => setShowVolumeSlider(!showVolumeSlider)}
+            className="p-4 rounded-full bg-white/5 hover:bg-white/10 transition-all duration-300 text-white/80 hover:text-white relative"
+            aria-label="Volume control"
+          >
+            {getVolumeIcon()}
+          </button>
+
+          {/* Volume Slider */}
+          <div 
+            className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-black/80 rounded-lg p-3 transition-all duration-300
+              ${showVolumeSlider ? 'opacity-100 visible transform translate-y-0' : 'opacity-0 invisible transform translate-y-2'}
+            `}
+          >
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+              value={volume}
+              onChange={handleVolumeChange}
+              className="w-24 h-1.5 appearance-none bg-white/20 rounded-full cursor-pointer
+                [&::-webkit-slider-thumb]:appearance-none
+                [&::-webkit-slider-thumb]:w-3
+                [&::-webkit-slider-thumb]:h-3
+                [&::-webkit-slider-thumb]:rounded-full
+                [&::-webkit-slider-thumb]:bg-white
+                [&::-webkit-slider-thumb]:shadow-lg
+                [&::-webkit-slider-thumb]:transition-all
+                [&::-webkit-slider-thumb]:hover:scale-110
+                
+                [&::-moz-range-thumb]:w-3
+                [&::-moz-range-thumb]:h-3
+                [&::-moz-range-thumb]:rounded-full
+                [&::-moz-range-thumb]:bg-white
+                [&::-moz-range-thumb]:border-0
+                [&::-moz-range-thumb]:shadow-lg
+                [&::-moz-range-thumb]:transition-all
+                [&::-moz-range-thumb]:hover:scale-110"
+            />
+            <div className="text-white/80 text-xs text-center mt-1">
+              {Math.round(volume * 100)}%
+            </div>
+          </div>
+        </div>
+
+        {/* Music Toggle Button */}
         <button
           onClick={toggleMusic}
           className="p-4 rounded-full bg-white/5 hover:bg-white/10 transition-all duration-300 text-white/80 hover:text-white relative group"
